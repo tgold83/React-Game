@@ -9,7 +9,7 @@ function ChooseCharacter(props) {
           type='text'
           name='name'
           placeholder='Name Your Character' />
-        <button type='submit'>{props.buttonText}</button>
+        <button onClick={props.onClick}>Save</button>
     {/* character images with onClick corresponding to background */}
      </form>
     </React.Fragment>
@@ -18,7 +18,6 @@ function ChooseCharacter(props) {
 
 ChooseCharacter.propTypes = {
   formSubmissionHandler: PropTypes.func,
-  buttonText: PropTypes.string
 }
 
 export default ChooseCharacter;

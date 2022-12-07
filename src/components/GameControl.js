@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import ChooseCharacter from './ChooseCharacter'
 import MenuPage from './MenuPage';
 import { collection, addDoc, doc, updateDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
 import { db, auth } from './../firebase';
 import StoryPage from './StoryPage';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 function GameControl() {
 
-  const [contentVisibleOnPage, setContentVisibleOnPage] = useState(false);
+  const navigate = useNavigate();
+
+  const navigateToStory = () => {
+    navigate('/StoryPage');
+  };
+
+  const handleStartClick = () => {
+    setContentVisibleOnPage(
+      <ChooseCharacter
+        onClick= {navigateToStory}/>
+    )
+  }
+
+  const [contentVisibleOnPage, setContentVisibleOnPage] = useState(<MenuPage onClick= {handleStartClick}/>);
   const [error, setError] = useState(null);
-  const [story, setStory] = useState(null);
+  const [story, setStory] = useState(true);
+  const [turn, setTurn] = useState(null);
   
   useEffect(() => { 
     console.log("EFFECT works!");
@@ -36,32 +51,22 @@ function GameControl() {
     return () => unSubscribe();
   }, []);
 
-const handleStartClick = () => {
-  setContentVisibleOnPage(
-    <ChooseCharacter
-      onClick= {nextAction}/>
-  )
-}
+  if (error) {
+    contentVisibleOnPage = <p>There was an error:{error}</p>
+  }
 
-const currentlyVisibleState = null;
+  function changePath(choices, choice) {
+    if (choices.button1 == choice) {
+      const options = choices.filter(choice => choice.turn == setTurn)
+      const filteredOptions = options.filter(choice => choice.from == setTurn)
 
-if (error) {
-  currentlyVisibleState = <p>There was an error:{error}</p>
-} else if(story) {
-  currentlyVisibleState = 
-  <MenuPage 
-    onClick= {handleStartClick}/>;
-}
-
-
-
+    }
+  }
 
 
   return (
     <React.Fragment>
-      {currentlyVisibleState}
       {contentVisibleOnPage}
-      {/* {error ? null : <button onClick={handleClick}>Start Adventure</button>} */}
     </React.Fragment>
   );
 }
@@ -69,3 +74,4 @@ if (error) {
 export default GameControl;
 
 //need handle option1/option2
+// on change value, currentlySelected image
