@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import GameLogo from "./../img/GameLogo.png";
+import MenuPage from "./MenuPage";
 
 function Header() {
   return (
     <React.Fragment>
-      <h1>Game</h1>
+      <img src={GameLogo} alt="Game Logo" width="15%" />
       <ul>
         <li>
           <Link to="/">Home</Link>
